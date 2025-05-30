@@ -12,6 +12,10 @@ const TaskList: React.FC<TaskListProps> = ({ token }) => {
   const [newDescription, setNewDescription] = useState("");
   const [error, setError] = useState("");
 
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+
   const loadTasks = async () => {
     try {
       const res = await getTasks(token);
@@ -45,6 +49,21 @@ const TaskList: React.FC<TaskListProps> = ({ token }) => {
       setTasks((prev) =>
         prev.map((t) => (t.id === task.id ? updated.data : t))
       );
+    } catch {
+      setError("Failed to update task");
+    }
+  };
+
+  const handleUpdate = async (id: number) => {
+    try {
+      const res = await updateTask(token, id, {
+        title: editTitle,
+        description: editDescription,
+      });
+      setTasks((prev) =>
+        prev.map((t) => (t.id === id ? res.data : t))
+      );
+      setEditingId(null); // exit edit mode
     } catch {
       setError("Failed to update task");
     }
@@ -84,13 +103,45 @@ const TaskList: React.FC<TaskListProps> = ({ token }) => {
               checked={task.isComplete}
               onChange={() => toggleComplete(task)}
             />
-            <strong>{task.title}</strong> - {task.description}
-            <button
-              onClick={() => handleDelete(task.id)}
-              style={{ marginLeft: "10px", color: "red" }}
-            >
-              Delete
-            </button>
+            {editingId === task.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  placeholder="Edit title"
+                />
+                <br />
+                <textarea
+                  value={editDescription}
+                  onChange={(e) => setEditDescription(e.target.value)}
+                  placeholder="Edit description"
+                />
+                <br />
+                <button onClick={() => handleUpdate(task.id)}>Save</button>
+                <button onClick={() => setEditingId(null)}>Cancel</button>
+              </>
+            ) : (
+              <>
+                <strong>{task.title}</strong> - {task.description}
+                <button
+                  onClick={() => {
+                    setEditingId(task.id);
+                    setEditTitle(task.title);
+                    setEditDescription(task.description || "");
+                  }}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(task.id)}
+                  style={{ marginLeft: "10px", color: "red" }}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </li>
         ))}
       </ul>
