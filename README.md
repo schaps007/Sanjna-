@@ -17,5 +17,5 @@ The goal is to provide a minimal yet fully functional solution focusing on corre
 
 - Clear instructions for setup, environment configuration, and running the app
 
-##Instructions:
+## Instructions:
 To run the backend navigate to the backend folder of the project and install any dependencies using the command `npm install`, then type the command `npm run dev`. While the backend is running, to then run the frontend open a new terminal window and navigate to the frontend and to install any npm dependencies type npm install. Once they have been installed, to then start the server type the command `npm start`. The frontend will run on http://localhost:3000 by default. The user can then navigate to the browser and visit http://localhost:3000 to access the Task Management application, where they can register, log in, and manage their tasks.
