@@ -5,6 +5,7 @@
 This project is a full-stack Task Management application built using React with TypeScript on the frontend, TypeScript on the backend, and PostgreSQL as the database. It allows users to register and log in securely, and then create, view, update, and delete tasks tied to their account. The application uses JWT-based authentication to protect task routes and bcrypt for password hashing.
 
 The goal is to provide a minimal yet fully functional solution focusing on correctness, security, and code clarity, suitable for rapid development.
+
 **Key features include:**
 
 - User registration and login with hashed passwords
